@@ -4,8 +4,11 @@ FROM jlesage/baseimage-gui:alpine-3.12
 # Docker image version is provided via build arg.
 ARG DOCKER_IMAGE_VERSION=unknown
 
+# BTDEX version
+ARG BTDEX_VERSION=v0.5.2
+
 # Define software download URLs.
-ARG BTDEX_URL=https://github.com/btdex/btdex/releases/download/v0.5.0/btdex-all-v0.5.0.jar
+ARG BTDEX_URL=https://github.com/btdex/btdex/releases/download/${BTDEX_VERSION}/btdex-all-${BTDEX_VERSION}.jar
 
 # Define working directory
 WORKDIR /tmp
