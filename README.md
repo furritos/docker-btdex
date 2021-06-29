@@ -1,1 +1,1 @@
-# docker-btdex
+# Docker container for BTDEX
