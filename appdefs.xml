@@ -31,6 +31,15 @@ distributed among Trade Token (TRT) holders.
     <!-- Changelog of the application. -->
     <history>
       <release>
+        <version>0.5.2</version>
+        <date>2021-06-29</date>
+        <change level="2">Translations update</change>
+        <change level="2">New plotter executable</change>
+        <change level="2">Fix plotting reporting more than 100% finished and better plot resume logic</change>
+        <change level="2">Simple plot checker on startup (for plots not finished)</change>
+        <change level="2">Automatic node selection</change>
+      </release>
+      <release>
         <version>0.5.0</version>
         <date>2021-06-16</date>
         <change level="2">Re-branded from Burst to Signum and BURST to SIGNA</change>
