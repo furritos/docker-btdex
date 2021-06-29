@@ -4,29 +4,32 @@ FROM jlesage/baseimage-gui:alpine-3.12
 # Docker image version is provided via build arg.
 ARG DOCKER_IMAGE_VERSION=unknown
 
+# Define software download URLs.
+ARG BTDEX_URL=https://github.com/btdex/btdex/releases/download/v0.5.0/btdex-all-v0.5.0.jar
+
+# Define working directory
+WORKDIR /tmp
+
 # Install xterm.
 RUN add-pkg xterm
 
 # Install Java 8.
 RUN \
-    add-pkg openjdk8-jre-base && \
-    # Removed uneeded stuff.
-    rm -r \
-        /usr/lib/jvm/java-1.8-openjdk/bin \
-        /usr/lib/jvm/java-1.8-openjdk/lib \
-        /usr/lib/jvm/java-1.8-openjdk/jre/lib/ext \
-        && \
-    # Cleanup.
-    rm -rf /tmp/* /tmp/.[!.]*
-
-# Install dependencies.
-RUN \
-    add-pkg \
-        wget \
+    add-pkg openjdk8-jre \
+        curl \
         sed \
         findutils \
         util-linux \
-        lsscsi
+        lsscsi \
+        gtk+3.0 \
+	libappindicator \
+        xdg-utils \
+	&& \
+    mkdir -p /defaults && \
+    #Download
+    curl -# -L -o /defaults/btdex.jar ${BTDEX_URL} && \
+    #Cleanup
+    rm -rf /tmp/* /tmp/.[!.]*
 
 # Adjust the openbox config.
 RUN \
@@ -43,8 +46,11 @@ RUN \
     install_app_icon.sh "$APP_ICON_URL"
 
 # Copy the start script.
-COPY startapp.sh /startapp.sh
+COPY rootfs/ /
 
 # Set the name of the application.
-ENV APP_NAME="BTDEX"
+ENV APP_NAME="BTDEX" \
+    S6_KILL_GRACETIME=8000
 
+# Mountable volume
+VOLUME ["/config"]
