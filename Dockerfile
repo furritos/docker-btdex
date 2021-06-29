@@ -1,22 +1,19 @@
-# Pull base image.
+# Pull base image
 FROM jlesage/baseimage-gui:alpine-3.12
 
-# Docker image version is provided via build arg.
+# Docker image version is provided via build arg
 ARG DOCKER_IMAGE_VERSION=unknown
 
 # BTDEX version
 ARG BTDEX_VERSION=v0.5.2
 
-# Define software download URLs.
+# Define software download URLs
 ARG BTDEX_URL=https://github.com/btdex/btdex/releases/download/${BTDEX_VERSION}/btdex-all-${BTDEX_VERSION}.jar
 
 # Define working directory
 WORKDIR /tmp
 
-# Install xterm.
-RUN add-pkg xterm
-
-# Install Java 8.
+# Install Java 8
 RUN \
     add-pkg openjdk8-jre \
         curl \
@@ -34,7 +31,7 @@ RUN \
     #Cleanup
     rm -rf /tmp/* /tmp/.[!.]*
 
-# Adjust the openbox config.
+# Adjust the openbox config
 RUN \
     # Maximize only the main window.
     sed-patch 's/<application type="normal">/<application type="normal" title="BTDEX">/' \
@@ -43,15 +40,15 @@ RUN \
     sed-patch '/<application type="normal" title="BTDEX">/a \    <layer>below</layer>' \
         /etc/xdg/openbox/rc.xml
 
-# Generate and install favicons.
+# Generate and install favicons
 RUN \
     APP_ICON_URL=https://raw.githubusercontent.com/jlesage/docker-templates/master/jlesage/images/generic-app-icon.png && \
     install_app_icon.sh "$APP_ICON_URL"
 
-# Copy the start script.
+# Copy the start script
 COPY rootfs/ /
 
-# Set the name of the application.
+# Set the name of the application
 ENV APP_NAME="BTDEX" \
     S6_KILL_GRACETIME=8000
 
