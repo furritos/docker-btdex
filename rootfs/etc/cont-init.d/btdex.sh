@@ -64,8 +64,10 @@ if [ ! -f /config/btdex.jar ]; then
     cp /defaults/btdex.jar /config
 fi
 
-# Add the API Port
-echo "apiPort=9000" > /config/config.properties
+# Add the API Port if the file doesn't exist
+if [! -f /config/config.properties ]; then
+    echo "apiPort=9000" > /config/config.properties
+fi
 
 # Take ownership of the config directory content.
 find /config -mindepth 1 -exec chown $USER_ID:$GROUP_ID {} \;
