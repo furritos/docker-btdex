@@ -184,7 +184,6 @@ services:
       - "5800:5800"
     volumes:
       - "/docker/appdata/btdex:/config:rw"
-      - "$HOME/Downloads:/output:rw"
 ```
 
 ## Docker Image Update
