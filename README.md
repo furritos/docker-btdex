@@ -42,7 +42,6 @@ Additionally, any Signum-based token can be listed instantly and traded.
          * [Changing Parameters of a Running Container](#changing-parameters-of-a-running-container)
       * [Docker Compose File](#docker-compose-file)
       * [Docker Image Update](#docker-image-update)
-         * [Synology](#synology)
          * [unRAID](#unraid)
       * [User/Group IDs](#usergroup-ids)
       * [Accessing the GUI](#accessing-the-gui)
@@ -50,13 +49,7 @@ Additionally, any Signum-based token can be listed instantly and traded.
          * [SSVNC](#ssvnc)
          * [Certificates](#certificates)
          * [VNC Password](#vnc-password)
-      * [Reverse Proxy](#reverse-proxy)
-         * [Routing Based on Hostname](#routing-based-on-hostname)
-         * [Routing Based on URL Path](#routing-based-on-url-path)
       * [Shell Access](#shell-access)
-      * [MyJDownloader](#myjdownloader)
-         * [Direct Connection](#direct-connection)
-      * [Click'n'Load](#clicknload)
       * [Support or Contact](#support-or-contact)
 
 ## Quick Start
