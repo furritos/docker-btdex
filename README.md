@@ -336,14 +336,6 @@ the Remote Framebuffer Protocol [RFC](https://tools.ietf.org/html/rfc6143) (see
 section [7.2.2](https://tools.ietf.org/html/rfc6143#section-7.2.2)).  Any
 characters beyond the limit are ignored.
 
-## Reverse Proxy
-
-The following sections contain NGINX configurations that need to be added in
-order to reverse proxy to this container.
-
-A reverse proxy server can route HTTP requests based on the hostname or the URL
-path.
-
 ## Shell Access
 
 To get shell access to the running container, execute the following command:
