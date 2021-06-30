@@ -1,5 +1,7 @@
 # Docker container for BTDEX
 
+[![Docker Image Size](https://img.shields.io/docker/image-size/furritos/docker-btdex/latest)](https://hub.docker.com/r/furritos/docker-btdex/tags)
+
 This is a Docker container for [BTDEX](https://btdex.trade/).
 
 The GUI of the application is accessed through a modern web browser (no installation or configuration needed on the client side) or via any VNC client.
