@@ -47,7 +47,12 @@ cd docker-btdex
 
 Launch the BTDEX docker container with the following Linux and PowerShell compatible command:
 ```
-docker run -d -v ${pwd}/.config:/opt/btdex/.config --name container-btdex -p 5800:5800 -p 5900:5900 docker-btdex:master
+docker run -d \
+  --name=container-btdex 
+  -v ${pwd}/.config:/opt/btdex/.config \
+  -p 5800:5800 \
+  -p 5900:5900 \
+  furritos/docker-btdex
 ```
 
 Browse to `http://localhost:5800` to access the BTDEX GUI.
@@ -56,10 +61,10 @@ Browse to `http://localhost:5800` to access the BTDEX GUI.
 
 ```
 docker run [-d] \
-    --name=btdex \
-    [-v <HOST_DIR>:<CONTAINER_DIR>[:PERMISSIONS]]... \
-    [-p <HOST_PORT>:<CONTAINER_PORT>]... \
-    furritos/docker-btdex
+  --name=container-btdex \
+  [-v <HOST_DIR>:<CONTAINER_DIR>[:PERMISSIONS]]... \
+  [-p <HOST_PORT>:<CONTAINER_PORT>]... \
+  furritos/docker-btdex
 ```
 | Parameter | Description |
 |-----------|-------------|
