@@ -130,11 +130,11 @@ re-create the container:
 
   1. Stop the container (if it is running):
 ```
-docker stop btdex
+docker stop container-btdex 
 ```
   2. Remove the container:
 ```
-docker rm btdex
+docker rm container-btdex 
 ```
   3. Create/start the container using the `docker run` command, by adjusting
      parameters as needed.
