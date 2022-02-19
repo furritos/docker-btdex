@@ -17,12 +17,15 @@ ARG BTDEX_HOME=/opt/btdex
 ARG BTDEX_APP=${BTDEX_HOME}/btdex.jar
 
 # Copy the start script.
-ADD startapp.sh /
+COPY "startapp.sh" "/"
+RUN chmod +x /startapp.sh
 
 # Install Java 11
 RUN \
     add-pkg openjdk11-jre \
     curl \
+    gtk+ \
+    gtk+-dev \
 	&& \
     mkdir -p ${BTDEX_HOME} && \
     #Download
