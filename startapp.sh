@@ -1,2 +1,2 @@
 #!/bin/sh
-exec java -Djavafx.cachedir=/tmp -Duser.home=/tmp -verbose -jar /opt/btdex/btdex.jar
+exec java -Duser.home=/opt/btdex -jar /opt/btdex/btdex.jar

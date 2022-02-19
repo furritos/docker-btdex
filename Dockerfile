@@ -1,5 +1,5 @@
 # Pull base image
-FROM jlesage/baseimage-gui:alpine-3.15
+FROM jlesage/baseimage-gui:alpine-3.15-glibc
 
 # Docker image version is provided via build arg
 ARG DOCKER_IMAGE_VERSION=unknown
@@ -24,14 +24,13 @@ RUN chmod +x /startapp.sh
 RUN \
     add-pkg openjdk11-jre \
     curl \
-    gtk+ \
-    gtk+-dev \
+    gtk+3.0 \
+    gtk+3.0-dev \
+    xdg-utils \
 	&& \
     mkdir -p ${BTDEX_HOME} && \
     #Download
-    curl -# -L -o ${BTDEX_APP} ${BTDEX_URL} && \
-    #Cleanup
-    rm -rf /tmp/* /tmp/.[!.]*
+    curl -# -L -o ${BTDEX_APP} ${BTDEX_URL}
 
 # Startup command
 ENV APP_NAME="BTDEX"
