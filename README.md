@@ -11,26 +11,6 @@ The GUI of the application is accessed through a modern web browser (no installa
 [![BTDEX logo](https://raw.githubusercontent.com/btdex/btdex/master/btdex-new.svg)](https://btdex.trade/)
 
 BTDEX is a decentralized exchange system running on the [Signum](https://signum.network/) blockchain.
-It implements a unique non-custodial exchange method for cryptocurrencies and conventional fiat currencies based on [BlockTalk](https://github.com/jjos2372/blocktalk) Smart Contracts and Signum on-chain encrypted messages.
-The exchange method is serverless and fees are distributed among [Trade Token (TRT)](https://explore.burstcoin.ro/asset/12402415494995249540) holders.
-
-You will also find more details at [https://btdex.trade](https://btdex.trade).
-Currently the following pairs are available with BURST:
- - BTC
- - ARRR
- - BCH
- - BNB
- - BSV
- - DOGE
- - ETH
- - LTC
- - XMR
- - XLA
-
- 
-Additionally, any Signum-based token can be listed instantly and traded.
-
----
 
 ## Table of Content
 
@@ -59,34 +39,31 @@ Additionally, any Signum-based token can be listed instantly and traded.
 **NOTE**: The Docker command provided in this quick start is given as an example
 and parameters should be adjusted to your need.
 
-Launch the BTDEX docker container with the following command:
+First, clone this repo and traverse into the directory:
 ```
-docker run -d \
-    --name=btdex \
-    -p 5800:5800 \
-    -v /docker/appdata/btdex:/config:rw \
-    furritos/docker-btdex
+git clone https://github.com/furritos/docker-btdex.git
+cd docker-btdex
 ```
 
-Where:
-  - `/docker/appdata/btdex`: This is where the application stores its configuration, log and any files needing persistency.
+Launch the BTDEX docker container with the following Linux and PowerShell compatible command:
+```
+docker run -d -v ${pwd}/.config:/opt/btdex/.config --name container-btdex -p 5800:5800 -p 5900:5900 docker-btdex:master
+```
 
-Browse to `http://your-host-ip:5800` to access the BTDEX GUI.
+Browse to `http://localhost:5800` to access the BTDEX GUI.
 
 ## Usage
 
 ```
 docker run [-d] \
     --name=btdex \
-    [-e <VARIABLE_NAME>=<VALUE>]... \
     [-v <HOST_DIR>:<CONTAINER_DIR>[:PERMISSIONS]]... \
     [-p <HOST_PORT>:<CONTAINER_PORT>]... \
-    furritos/btdex
+    furritos/docker-btdex
 ```
 | Parameter | Description |
 |-----------|-------------|
 | -d        | Run the container in the background.  If not set, the container runs in the foreground. |
-| -e        | Pass an environment variable to the container.  See the [Environment Variables](#environment-variables) section for more details. |
 | -v        | Set a volume mapping (allows to share a folder/file between the host and the container).  See the [Data Volumes](#data-volumes) section for more details. |
 | -p        | Set a network port mapping (exposes an internal container port to the host).  See the [Ports](#ports) section for more details. |
 
@@ -122,7 +99,7 @@ format: `<HOST_DIR>:<CONTAINER_DIR>[:PERMISSIONS]`.
 
 | Container path  | Permissions | Description |
 |-----------------|-------------|-------------|
-|`/config`| rw | This is where the application stores its configuration, log and any files needing persistency. |
+|`/opt/btdex/.config`| rw | This is where the application stores its configuration for persistency. |
 
 ### Ports
 
@@ -157,10 +134,10 @@ docker rm btdex
   3. Create/start the container using the `docker run` command, by adjusting
      parameters as needed.
 
-**NOTE**: Since all application's data is saved under the `/config` container
+**NOTE**: Since all application's data is saved under the `/opt/btdex/.config` container
 folder, destroying and re-creating a container is not a problem: nothing is lost
-and the application comes back with the same state (as long as the mapping of
-the `/config` folder remains the same).
+and the application comes back with the same state (as long as the volume mapping of
+the `/opt/btdex/.config` folder remains the same).
 
 ## Docker Compose File
 
@@ -174,11 +151,11 @@ ports are part of the example.
 version: '3'
 services:
   btdex:
-    image: furritos/btdex
+    image: furritos/docker-btdex
     ports:
       - "5800:5800"
     volumes:
-      - "/docker/appdata/btdex:/config:rw"
+      - "/docker/appdata/btdex/config:/opt/btdex/.config:rw"
 ```
 
 ## Docker Image Update
@@ -199,15 +176,15 @@ Finally, the Docker image can be manually updated with these steps:
 
   1. Fetch the latest image:
 ```
-docker pull furritos/btdex
+docker pull furritos/docker-btdex
 ```
   2. Stop the container:
 ```
-docker stop btdex
+docker stop docker-btdex
 ```
   3. Remove the container:
 ```
-docker rm btdex
+docker rm docker-btdex
 ```
   4. Create and start the container using the `docker run` command, with the
 the same parameters that were used when it was deployed initially.
