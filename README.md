@@ -50,6 +50,7 @@ Launch the BTDEX docker container with the following Linux and PowerShell compat
 docker run -d \
   --name=container-btdex 
   -v ${pwd}/.config:/opt/btdex/.config \
+  -v ${pwd}/plots:/opt/btdex/plots \
   -p 5800:5800 \
   -p 5900:5900 \
   furritos/docker-btdex
