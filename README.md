@@ -64,6 +64,7 @@ docker run [-d] \
   --name=container-btdex \
   [-v <HOST_DIR>:<CONTAINER_DIR>[:PERMISSIONS]]... \
   [-p <HOST_PORT>:<CONTAINER_PORT>]... \
+  [-e <VARIABLE_NAME>=<VALUE>]... \
   furritos/docker-btdex
 ```
 | Parameter | Description |
@@ -71,6 +72,7 @@ docker run [-d] \
 | -d        | Run the container in the background.  If not set, the container runs in the foreground. |
 | -v        | Set a volume mapping (allows to share a folder/file between the host and the container).  See the [Data Volumes](#data-volumes) section for more details. |
 | -p        | Set a network port mapping (exposes an internal container port to the host).  See the [Ports](#ports) section for more details. |
+| -e        | Pass an environment variable to the container. See the [Environment Variables](#environment-variables) section for more details. |
 
 ### Environment Variables
 

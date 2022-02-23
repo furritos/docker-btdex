@@ -1,2 +1,2 @@
 #!/bin/sh
-exec java -Duser.home=/opt/btdex -jar /opt/btdex/btdex.jar
+exec java -Djava.io.tmpdir=/tmp -Duser.home=/opt/btdex -jar /opt/btdex/btdex.jar
