@@ -8,7 +8,7 @@ The GUI of the application is accessed through a modern web browser (no installa
 
 ---
 
-[![BTDEX logo](https://raw.githubusercontent.com/btdex/btdex/master/btdex-new.svg)](https://btdex.trade/)
+[![BTDEX logo](doc/img/btdex-docker.png)](https://btdex.trade/)
 
 BTDEX is a decentralized exchange system running on the [Signum](https://signum.network/) blockchain.
 
