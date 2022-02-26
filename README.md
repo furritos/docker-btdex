@@ -12,32 +12,10 @@ The GUI of the application is accessed through a modern web browser (no installa
 
 BTDEX is a decentralized exchange system running on the [Signum](https://signum.network/) blockchain.
 
-## Table of Content
-
-   * [Docker container for BTDEX](#docker-container-for-btdex)
-      * [Table of Content](#table-of-content)
-      * [Quick Start](#quick-start)
-      * [Usage](#usage)
-         * [Environment Variables](#environment-variables)
-         * [Data Volumes](#data-volumes)
-         * [Ports](#ports)
-         * [Changing Parameters of a Running Container](#changing-parameters-of-a-running-container)
-      * [Docker Compose File](#docker-compose-file)
-      * [Docker Image Update](#docker-image-update)
-         * [unRAID](#unraid)
-      * [User/Group IDs](#usergroup-ids)
-      * [Accessing the GUI](#accessing-the-gui)
-      * [Security](#security)
-         * [SSVNC](#ssvnc)
-         * [Certificates](#certificates)
-         * [VNC Password](#vnc-password)
-      * [Shell Access](#shell-access)
-      * [Support or Contact](#support-or-contact)
-
 ## Quick Start
 
-**NOTE**: The Docker command provided in this quick start is given as an example
-and parameters should be adjusted to your need.
+**NOTE**: The Docker command provided in this quick start is given as an example and parameters 
+should be adjusted to your need.
 
 First, clone this repo and traverse into the directory:
 ```
@@ -51,14 +29,57 @@ docker run -d \
   --name=container-btdex 
   -v ${pwd}/.config:/opt/btdex/.config \
   -v ${pwd}/plots:/opt/btdex/plots \
+  -v ${pwd}/cache:/opt/btdex/cache \
   -p 5800:5800 \
   -p 5900:5900 \
   furritos/docker-btdex
 ```
 
-Browse to `http://localhost:5800` to access the BTDEX GUI.
+Upon a successful launch, you'll receive the hash of your container.  Browse to `http://localhost:5800` 
+to access the BTDEX GUI over your default web browser.  Configuration of accounts are out of scope for 
+this document.  Please refer to **BTDEX's** [Get Started](https://btdex.trade/index.html#GetStarted) page for more information.  What will be covered is 
+the usage of volume between BTDEX and Docker.
 
-## Usage
+## BTDEX Volumes
+
+There are three volumes being mounted here:
+  - **Configuration**: `/opt/btdex/.config`
+    - `config.properties` is the file BTDEX's configuration file
+  - **Plot storage**: `/opt/btdex/plots` 
+    - Required, volume where plotted files will be stored
+  - **Plot caching**: `/opt/btdex/cache`
+    - Optional, a high speed storage device (SSD) that stages plotting files
+      - A cache drive is highly recommended when the **plot storage** is an SMR drive
+
+### Configuring 
+
+**NOTE**: Advanced Docker volume mounting is out of scope for this document.  For this example, we are 
+just mounting to a local folder on the server and is **not the recommended approach**.  
+
+**NOTE 2**: Additional BTDEX configurations are out of scope for this document.  Visit [BTDEX's Discord Channel](https://discord.com/invite/WGQBvqs)
+for more information.
+
+#### Cache Volume (optional)
+
+  - Click on the **MINING** tab **(1)** and then click on **Select a SSD cache** button **(2)**
+  ![cache-1](doc/img/cache-1.png)
+  - Select the `cache` folder and click `Open`
+  ![cache2](doc/img/cache-2.png)
+
+#### Plot Volume (required for plotting and mining)
+
+  - Click on the **MINING** tab **(1)** and then click on **Select a disk folder to use** button **(2)**
+  ![cache-1](doc/img/plot-1.png)
+  - Select the `plots` folder and click `Open`
+  ![cache2](doc/img/plot-2.png)
+
+**NOTE**: More than one folder is allowed in BTDEX but that would also require additional volumes to be 
+configured on the docker container.  Additional volume configurations are outside the scope of this document 
+but reference documentation is provided further below.
+
+---
+
+## Docker Basic Usage
 
 ```
 docker run [-d] \
@@ -75,11 +96,9 @@ docker run [-d] \
 | -p        | Set a network port mapping (exposes an internal container port to the host).  See the [Ports](#ports) section for more details. |
 | -e        | Pass an environment variable to the container. See the [Environment Variables](#environment-variables) section for more details. |
 
-### Environment Variables
+### Docker Image Environment Variables
 
-To customize some properties of the container, the following environment
-variables can be passed via the `-e` parameter (one for each variable).  Value
-of this parameter has the format `<VARIABLE_NAME>=<VALUE>`.
+To customize some properties of this container that is based off the `jlesage/docker-baseimage-gui` image, the following environment variables can be passed via the `-e` parameter (one for each variable).  Value of this parameter has the format `<VARIABLE_NAME>=<VALUE>`.
 
 | Variable       | Description                                  | Default |
 |----------------|----------------------------------------------|---------|
@@ -147,25 +166,6 @@ folder, destroying and re-creating a container is not a problem: nothing is lost
 and the application comes back with the same state (as long as the volume mapping of
 the `/opt/btdex/.config` folder remains the same).
 
-## Docker Compose File
-
-Here is an example of a `docker-compose.yml` file that can be used with
-[Docker Compose](https://docs.docker.com/compose/overview/).
-
-Make sure to adjust according to your needs.  Note that only mandatory network
-ports are part of the example.
-
-```yaml
-version: '3'
-services:
-  btdex:
-    image: furritos/docker-btdex
-    ports:
-      - "5800:5800"
-    volumes:
-      - "/docker/appdata/btdex/config:/opt/btdex/.config:rw"
-```
-
 ## Docker Image Update
 
 Because features are added, issues are fixed, or simply because a new version
@@ -188,11 +188,11 @@ docker pull furritos/docker-btdex
 ```
   2. Stop the container:
 ```
-docker stop docker-btdex
+docker stop container-btdex 
 ```
   3. Remove the container:
 ```
-docker rm docker-btdex
+docker rm container-btdex 
 ```
   4. Create and start the container using the `docker run` command, with the
 the same parameters that were used when it was deployed initially.
@@ -265,25 +265,6 @@ few VNC clients support this method.  [SSVNC] is one of them.
 
 [SSVNC]: http://www.karlrunge.com/x11vnc/ssvnc.html
 
-### SSVNC
-
-[SSVNC] is a VNC viewer that adds encryption security to VNC connections.
-
-While the Linux version of [SSVNC] works well, the Windows version has some
-issues.  At the time of writing, the latest version `1.0.30` is not functional,
-as a connection fails with the following error:
-```
-ReadExact: Socket error while reading
-```
-However, for your convenience, an unofficial and working version is provided
-here:
-
-https://github.com/furritos/docker-baseimage-gui/raw/master/tools/ssvnc_windows_only-1.0.30-r1.zip
-
-The only difference with the official package is that the bundled version of
-`stunnel` has been upgraded to version `5.49`, which fixes the connection
-problems.
-
 ### Certificates
 
 Here are the certificate files needed by the container.  By default, when they
@@ -328,11 +309,8 @@ characters beyond the limit are ignored.
 To get shell access to the running container, execute the following command:
 
 ```
-docker exec -ti CONTAINER sh
+docker exec -ti container-btdex sh
 ```
-
-Where `CONTAINER` is the ID or the name of the container used during its
-creation (e.g. `crashplan-pro`).
 
 ## Support or Contact
 

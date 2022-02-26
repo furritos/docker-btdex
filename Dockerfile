@@ -29,6 +29,7 @@ RUN \
     xdg-utils \
 	&& \
     mkdir -p ${BTDEX_HOME}/plots && \
+    mkdir -p ${BTDEX_HOME}/cache && \
     #Download
     curl -# -L -o ${BTDEX_APP} ${BTDEX_URL}
 
