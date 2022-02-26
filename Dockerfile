@@ -28,7 +28,7 @@ RUN \
     gtk+3.0-dev \
     xdg-utils \
 	&& \
-    mkdir -p ${BTDEX_HOME} && \
+    mkdir -p ${BTDEX_HOME}/plots && \
     #Download
     curl -# -L -o ${BTDEX_APP} ${BTDEX_URL}
 
