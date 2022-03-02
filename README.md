@@ -1,6 +1,6 @@
 # Docker container for BTDEX (noVNC Feature) - BETA
 
-[![Docker Image Size](https://img.shields.io/docker/image-size/furritos/docker-btdex/latest)](https://hub.docker.com/r/furritos/docker-btdex/tags)
+[![Docker Image Size](https://img.shields.io/docker/image-size/furritos/docker-btdex/novnc-feature)](https://hub.docker.com/r/furritos/docker-btdex/tags)
 
 This is a Docker container for [BTDEX](https://btdex.trade/) based on [jlesage/docker-baseimage-gui](https://github.com/jlesage/docker-baseimage-gui) Docker image.
 
