@@ -1,4 +1,4 @@
-# Docker container for BTDEX
+# Docker container for BTDEX (noVNC Feature) - BETA
 
 [![Docker Image Size](https://img.shields.io/docker/image-size/furritos/docker-btdex/latest)](https://hub.docker.com/r/furritos/docker-btdex/tags)
 
