@@ -26,33 +26,48 @@ Launch the **BTDEX** Docker container with the following, Linux and PowerShell c
 ```
 docker run -d \
   --name=container-btdex 
-  -v ${pwd}/.config:/opt/btdex/.config \
+  -v ${pwd}/config:/opt/btdex/.config \
   -v ${pwd}/plots:/opt/btdex/plots \
   -v ${pwd}/cache:/opt/btdex/cache \
-  -p 5800:5800 \
+  -p 5800:8080 \
   -p 5900:5900 \
   furritos/docker-btdex
 ```
-Finally, take your favorite web browse and open `http://localhost:5800` 
-Please refer to this [Get Started](https://btdex.trade/index.html#GetStarted) page for more information on using **BTDEX**.  
+Finally, take your favorite web browse and open `http://localhost:5800`.
+Please refer to this [Get Started](https://btdex.trade/index.html#GetStarted) page for more information on using **BTDEX**.
+
+**NOTE:** By default, the resolution is set to `1440X900`.  To override these values, set resolution to `1680X1050`, the `docker run` command line would be:
+
+```
+docker run -d \
+  --name=container-btdex 
+  -v ${pwd}/config:/opt/btdex/.config \
+  -v ${pwd}/plots:/opt/btdex/plots \
+  -v ${pwd}/cache:/opt/btdex/cache \
+  -p 5800:8080 \
+  -p 5900:5900 \
+  -e DISPLAY_WIDTH=16680 \
+  -e DISPLAY_HEIGHT=1050 \
+  furritos/docker-btdex
+```
 
 ### Cache Volume Configuration
 
 **Required if plotting will be performed**
 
   - Click on the **MINING** tab **(1)** and then click on **Select a SSD cache** button **(2)**
-  ![cache-1](doc/img/cache-1.png)
+    ![cache-1](doc/img/cache-1.png)
   - Select the `cache` folder and click `Open`
-  ![cache2](doc/img/cache-2.png)
+    ![cache2](doc/img/cache-2.png)
 
 ### Plots Volume Configuration
 
 **Required if mining will be performed**
 
   - Click on the **MINING** tab **(1)** and then click on **Select a disk folder to use** button **(2)**
-  ![cache-1](doc/img/plot-1.png)
+    ![cache-1](doc/img/plot-1.png)
   - Select the `plots` folder and click `Open`
-  ![cache2](doc/img/plot-2.png)
+    ![cache2](doc/img/plot-2.png)
 
 ---
 
@@ -73,9 +88,9 @@ docker run [-d] \
 | -p        | Set a network port mapping (exposes an internal container port to the host).  See the [Ports](#ports) section for more details. |
 | -e        | Pass an environment variable to the container. See the [Environment Variables](#environment-variables) section for more details. |
 
-### Docker Image Environment Variables
+### Environment Variables
 
-To customize some properties of this container that is based off the `jlesage/docker-baseimage-gui` image, the following environment variables can be passed via the `-e` parameter (one for each variable).  Value of this parameter has the format `<VARIABLE_NAME>=<VALUE>`.
+To customize some properties of this container, the following environment variables can be passed via the `-e` parameter (one for each variable).  Value of this parameter has the format `<VARIABLE_NAME>=<VALUE>`.
 
 | Variable       | Description                                  | Default |
 |----------------|----------------------------------------------|---------|
@@ -101,11 +116,11 @@ via the `-p` parameter (one per port mapping).  Each mapping is defined in the
 following format: `<HOST_PORT>:<CONTAINER_PORT>`.  The port number inside the
 container cannot be changed, but you are free to use any port on the host side.
 
-| Port | Mapping to host | Description |
-|------|-----------------|-------------|
-| 5800 | Mandatory | Port used to access the application's GUI via the web interface. |
-| 5900 | Optional | Port used to access the application's GUI via the VNC protocol.  Optional if no VNC client is used. |
-| 9000 | Optional | Port used by *BTDEX* to expose API endpoints.  More information can be found over at [BTDEX - API](https://github.com/btdex/btdex#api) section. |
+| Host Port | Container Port | Mapping to host | Description |
+|-----------|----------------|-----------------|-------------|
+| 5800 | 8080 | Mandatory | Port used to access the application's GUI via the web interface. |
+| 5900 | 5900 | Optional | Port used to access the application's GUI via the VNC protocol.  Optional if no VNC client is used. |
+| 9000 | 9000 | Optional | Port used by *BTDEX* to expose API endpoints.  More information can be found over at [BTDEX - API](https://github.com/btdex/btdex#api) section. |
 
 ### Changing Parameters of a Running Container
 
