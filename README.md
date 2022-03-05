@@ -25,7 +25,7 @@ cd docker-btdex
 Launch the **BTDEX** Docker container with the following, Linux and PowerShell compatible, command:
 ```
 docker run -d \
-  --name=container-btdex 
+  --name=container-btdex \
   -v ${pwd}/config:/opt/btdex/.config \
   -v ${pwd}/plots:/opt/btdex/plots \
   -v ${pwd}/cache:/opt/btdex/cache \
@@ -40,13 +40,13 @@ Please refer to this [Get Started](https://btdex.trade/index.html#GetStarted) pa
 
 ```
 docker run -d \
-  --name=container-btdex 
+  --name=container-btdex \
   -v ${pwd}/config:/opt/btdex/.config \
   -v ${pwd}/plots:/opt/btdex/plots \
   -v ${pwd}/cache:/opt/btdex/cache \
   -p 5800:8080 \
   -p 5900:5900 \
-  -e DISPLAY_WIDTH=16680 \
+  -e DISPLAY_WIDTH=1680 \
   -e DISPLAY_HEIGHT=1050 \
   furritos/docker-btdex
 ```
