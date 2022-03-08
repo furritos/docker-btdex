@@ -23,6 +23,7 @@ cd docker-btdex
 ```
 
 Launch the **BTDEX** Docker container with the following, Linux and PowerShell compatible, command:
+
 ```
 docker run -d \
   --name=container-btdex \
@@ -33,6 +34,20 @@ docker run -d \
   -p 5900:5900 \
   furritos/docker-btdex
 ```
+
+For macOS, the following command will need to be executed (note the capitalized `PWD`):
+
+```
+docker run -d \
+  --name=container-btdex \
+  -v ${PWD}/config:/opt/btdex/.config \
+  -v ${PWD}/plots:/opt/btdex/plots \
+  -v ${PWD}/cache:/opt/btdex/cache \
+  -p 5800:8080 \
+  -p 5900:5900 \
+  furritos/docker-btdex
+```
+
 Finally, take your favorite web browse and open `http://localhost:5800`.
 Please refer to this [Get Started](https://btdex.trade/index.html#GetStarted) page for more information on using **BTDEX**.
 
