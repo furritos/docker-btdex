@@ -1,6 +1,7 @@
 # Docker container for BTDEX
 
-[![BTDEX logo](https://raw.githubusercontent.com/btdex/btdex/master/btdex-new.svg)](https://btdex.trade/)
+
+[![BTDEX logo](doc/img/btdex-docker.png)](https://btdex.trade/)
 
 This is a Docker container for [BTDEX](https://btdex.trade/).
 
@@ -13,19 +14,20 @@ The GUI of the application is accessed through a modern web browser (no installa
 **NOTE**: The Docker command provided in this quick start is given as an example
 and parameters should be adjusted to your need.
 
-Launch the BTDEX docker container with the following command:
+Launch the **BTDEX** docker container with the following command:
 ```
 docker run -d \
-    --name=btdex \
-    -p 5800:5800 \
-    -v /docker/appdata/btdex:/config:rw \
-    furritos/docker-btdex
+  --name=container-btdex 
+  -v ${pwd}/.config:/opt/btdex/.config \
+  -v ${pwd}/plots:/opt/btdex/plots \
+  -v ${pwd}/cache:/opt/btdex/cache \
+  -p 5800:5800 \
+  -p 5900:5900 \
+  furritos/docker-btdex
 ```
 
-Where:
-  - `/docker/appdata/btdex`: This is where the application stores its configuration, log and any files needing persistency.
-
-Browse to `http://your-host-ip:5800` to access the BTDEX GUI.
+Finally, take your favorite web browse and open `http://localhost:5800` 
+Please refer to this [Get Started](https://btdex.trade/index.html#GetStarted) page for more information on using **BTDEX**.  
 
 ## Documentation
 
