@@ -1,5 +1,5 @@
 # Pull base image
-FROM alpine:3.15
+FROM debian:bullseye-slim
 
 # BTDEX version
 ARG BTDEX_VERSION=v0.5.14
@@ -20,26 +20,37 @@ ARG ROOT_HOME=/root
 ARG NOVNC_HOME=${ROOT_HOME}/noVNC
 
 # Install Fluxbox, noVNC, OpenJDK-11 and download BTDEX.jar
-RUN \
-    echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-    apk --update --upgrade add bash curl firefox fluxbox font-noto font-noto-extra \
-    git gtk+3.0 gtk+3.0-dev openjdk11-jre supervisor terminus-font ttf-dejavu \
-    ttf-font-awesome ttf-inconsolata x11vnc xdg-utils xterm xvfb && \
-    git clone --depth 1 https://github.com/novnc/noVNC.git ${NOVNC_HOME} && \
+RUN apt-get update && \
+    env DEBIAN_FRONTEND=noninteractive apt reinstall -y ca-certificates && \
+        update-ca-certificates && \
+        apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        eterm \
+        firefox-esr \
+        fluxbox \
+        git \
+        openjdk-11-jre \
+        openssl \
+        supervisor \
+        x11vnc \
+        xdg-utils \
+        xvfb && \
+    git clone --depth 1 https://github.com/novnc/noVNC ${NOVNC_HOME} && \
     git clone --depth 1 https://github.com/novnc/websockify ${NOVNC_HOME}/utils/websockify && \
-    sed -i -- "s/ps -p/ps -o pid | grep/g" ${NOVNC_HOME}/utils/novnc_proxy && \
     mkdir -p ${BTDEX_HOME}/plots && \
     mkdir -p ${BTDEX_HOME}/cache && \
     mkdir -p ${ROOT_HOME}/.fluxbox && \
     curl -# -L -o ${BTDEX_APP} ${BTDEX_URL} && \
-    # A bit of cleaning up to slim down the image
-    apk del git && \
     rm -rf ${NOVNC_HOME}/.git && \
     rm -rf ${NOVNC_HOME}/utils/websockify/.git && \
-    rm -rf /var/cache/apk/*
+    rm -rf /var/lib/apt/lists/*
 
 # Copy Supervisor Daemon configuration 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Copy Signum wallpaper
+COPY signum-wallpaper.jpg /usr/share/images/fluxbox/signum-wallpaper.jpg
 
 # Copy Fluxbox configurations
 ADD ./fluxbox ${ROOT_HOME}/.fluxbox
@@ -57,3 +68,5 @@ ENV HOME=${ROOT_HOME} \
     DISPLAY_HEIGHT=900
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+
+#CMD fluxbox

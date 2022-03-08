@@ -1,10 +1,8 @@
-[app] (Class=Firefox)
-    [Layer]             {2}
-    [FocusNewWindow]    {true}
-[end]
 [app] (Name=BTDEX)
     [Dimensions]        {50% 50%}
     [Layer]             {12}
 [end]
-
-
+[app] (name=Navigator) (class=Firefox-esr) (role=browser)
+    [Layer]             {2}
+    [FocusNewWindow]    {true}
+[end]
