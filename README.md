@@ -48,7 +48,7 @@ docker run -d \
   furritos/docker-btdex
 ```
 
-Finally, take your favorite web browse and open `http://localhost:5800`.
+Finally, take your favorite web browse and open `http://localhost:5800/vnc.html`.
 Please refer to this [Get Started](https://btdex.trade/index.html#GetStarted) page for more information on using **BTDEX**.
 
 **NOTE:** By default, the resolution is set to `1440X900`.  To override these values, set resolution to `1680X1050`, the `docker run` command line would be:
