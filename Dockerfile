@@ -2,7 +2,7 @@
 FROM debian:bullseye-slim
 
 # BTDEX version
-ARG BTDEX_VERSION=v0.6.6
+ARG BTDEX_VERSION=v0.6.7
 
 # Define software download URLs
 ARG BTDEX_URL=https://github.com/btdex/btdex/releases/download/${BTDEX_VERSION}/btdex-${BTDEX_VERSION}-all.jar
