@@ -14,7 +14,7 @@ pipeline {
    parameters {
       string(name: "DockerHub_Name", defaultValue: 'furritos', description: 'DockerHub repository name')
       string(name: "Branch_Name", defaultValue: 'master', description: '')
-      string(name: "Image_Name", defaultValue: 'btdex', description: 'Image name')
+      string(name: "Image_Name", defaultValue: 'docker-btdex', description: 'Image name')
       string(name: "Image_Tag", defaultValue: '0.6.8', description: 'Image tag')
       booleanParam(name: "PushImage", defaultValue: true)
    }
