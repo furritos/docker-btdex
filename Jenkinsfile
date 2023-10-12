@@ -16,7 +16,7 @@ pipeline {
       string(name: "Branch_Name", defaultValue: 'master', description: '')
       string(name: "Image_Name", defaultValue: 'btdex', description: 'Image name')
       string(name: "Image_Tag", defaultValue: '0.6.8', description: 'Image tag')
-      booleanParam(name: "PushImage", defaultValue: false)
+      booleanParam(name: "PushImage", defaultValue: true)
    }
 
    stages {
