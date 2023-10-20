@@ -89,30 +89,6 @@ docker run [-d] \
 | -p        | Set a network port mapping (exposes an internal container port to the host).  See the [Ports](#ports) section for more details. |
 | -e        | Pass an environment variable to the container. See the [Environment Variables](#environment-variables) section for more details. |
 
-### Environment Variables
-
-*Courtesy of [KasmVNC Github Page](https://github.com/linuxserver/docker-baseimage-kasmvnc)*
-
-**Authentication for these containers is included as a convenience and to keep in sync with the previous xrdp containers they replace. We use bash to substitute in settings user/password and some strings might break that. In general this authentication mechanism should be used to keep the kids out not the internet**
-
-If you are looking for a robust secure application gateway please check out [SWAG](https://github.com/linuxserver/docker-swag). 
-
-All application settings are passed via environment variables:
-
-| Variable | Description |
-| :----: | --- |
-| CUSTOM_PORT | Internal port the container listens on for http if it needs to be swapped from the default 3000. |
-| CUSTOM_HTTPS_PORT | Internal port the container listens on for https if it needs to be swapped from the default 3001. |
-| CUSTOM_USER | HTTP Basic auth username, abc is default. |
-| PASSWORD | HTTP Basic auth password, abc is default. If unset there will be no auth |
-| SUBFOLDER | Subfolder for the application if running a subfolder reverse proxy, need both slashes IE `/subfolder/` |
-| TITLE | The page title displayed on the web browser, default "KasmVNC Client". |
-| FM_HOME | This is the home directory (landing) for the file manager, default "/config". |
-| START_DOCKER | If set to false a container with privilege will not automatically start the DinD Docker setup. |
-| DRINODE | If mounting in /dev/dri for [DRI3 GPU Acceleration](https://www.kasmweb.com/kasmvnc/docs/master/gpu_acceleration.html) allows you to specify the device to use |
-| DISABLE_IPV6 | If set to true or any value this will disable IPv6 |
-
-
 ### Data Volumes
 
 The following table describes data volumes used by the container.  The mappings are set via the `-v` parameter.  Each mapping is specified with the following format: `<HOST_DIR>:<CONTAINER_DIR>[:PERMISSIONS]`.
