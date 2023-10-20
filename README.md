@@ -2,7 +2,7 @@
 [![Docker Image Size](https://img.shields.io/docker/image-size/furritos/docker-btdex/latest)](https://hub.docker.com/r/furritos/docker-btdex/tags)
 
 This project takes the standalone **BTDEX** application and transforms into portable, web-accessible 
-container using Docker and noVNC.
+container using Docker and [KasmVNC base image](https://github.com/linuxserver/docker-baseimage-kasmvnc).
 
 ---
 
