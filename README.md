@@ -30,8 +30,7 @@ docker run -d \
   -v ${pwd}/config:/opt/btdex/.config \
   -v ${pwd}/plots:/opt/btdex/plots \
   -v ${pwd}/cache:/opt/btdex/cache \
-  -p 5800:8080 \
-  -p 5900:5900 \
+  -p 3000:3000 \
   furritos/docker-btdex
 ```
 
@@ -43,15 +42,12 @@ docker run -d \
   -v ${PWD}/config:/opt/btdex/.config \
   -v ${PWD}/plots:/opt/btdex/plots \
   -v ${PWD}/cache:/opt/btdex/cache \
-  -p 5800:8080 \
-  -p 5900:5900 \
+  -p 3000:3000 \
   furritos/docker-btdex
 ```
 
-Finally, take your favorite web browse and open `http://localhost:5800/vnc.html`.
+Finally, take your favorite web browse and open `http://localhost:3000/`.
 Please refer to this [Get Started](https://btdex.trade/index.html#GetStarted) page for more information on using **BTDEX**.
-
-**NOTE:** By default, the resolution is set to `1440X900`.  To override these values, set resolution to `1680X1050`, the `docker run` command line would be:
 
 ```
 docker run -d \
@@ -59,10 +55,7 @@ docker run -d \
   -v ${pwd}/config:/opt/btdex/.config \
   -v ${pwd}/plots:/opt/btdex/plots \
   -v ${pwd}/cache:/opt/btdex/cache \
-  -p 5800:8080 \
-  -p 5900:5900 \
-  -e DISPLAY_WIDTH=1680 \
-  -e DISPLAY_HEIGHT=1050 \
+  -p 3000:3000 \
   furritos/docker-btdex
 ```
 
@@ -105,12 +98,25 @@ docker run [-d] \
 
 ### Environment Variables
 
-To customize some properties of this container, the following environment variables can be passed via the `-e` parameter (one for each variable).  Value of this parameter has the format `<VARIABLE_NAME>=<VALUE>`.
+**Authentication for these containers is included as a convenience and to keep in sync with the previous xrdp containers they replace. We use bash to substitute in settings user/password and some strings might break that. In general this authentication mechanism should be used to keep the kids out not the internet**
 
-| Variable       | Description                                  | Default |
-|----------------|----------------------------------------------|---------|
-|`DISPLAY_WIDTH`| Width (in pixels) of the application's window. | `1440` |
-|`DISPLAY_HEIGHT`| Height (in pixels) of the application's window. | `900` |
+If you are looking for a robust secure application gateway please check out [SWAG](https://github.com/linuxserver/docker-swag). 
+
+All application settings are passed via environment variables:
+
+| Variable | Description |
+| :----: | --- |
+| CUSTOM_PORT | Internal port the container listens on for http if it needs to be swapped from the default 3000. |
+| CUSTOM_HTTPS_PORT | Internal port the container listens on for https if it needs to be swapped from the default 3001. |
+| CUSTOM_USER | HTTP Basic auth username, abc is default. |
+| PASSWORD | HTTP Basic auth password, abc is default. If unset there will be no auth |
+| SUBFOLDER | Subfolder for the application if running a subfolder reverse proxy, need both slashes IE `/subfolder/` |
+| TITLE | The page title displayed on the web browser, default "KasmVNC Client". |
+| FM_HOME | This is the home directory (landing) for the file manager, default "/config". |
+| START_DOCKER | If set to false a container with privilege will not automatically start the DinD Docker setup. |
+| DRINODE | If mounting in /dev/dri for [DRI3 GPU Acceleration](https://www.kasmweb.com/kasmvnc/docs/master/gpu_acceleration.html) allows you to specify the device to use |
+| DISABLE_IPV6 | If set to true or any value this will disable IPv6 |
+
 
 ### Data Volumes
 
@@ -133,8 +139,6 @@ container cannot be changed, but you are free to use any port on the host side.
 
 | Host Port | Container Port | Mapping to host | Description |
 |-----------|----------------|-----------------|-------------|
-| 5800 | 8080 | Mandatory | Port used to access the application's GUI via the web interface. |
-| 5900 | 5900 | Optional | Port used to access the application's GUI via the VNC protocol.  Optional if no VNC client is used. |
 | 9000 | 9000 | Optional | Port used by *BTDEX* to expose API endpoints.  More information can be found over at [BTDEX - API](https://github.com/btdex/btdex#api) section. |
 
 ### Changing Parameters of a Running Container
@@ -210,12 +214,7 @@ graphical interface of the application can be accessed via:
 
   * A web browser:
 ```
-http://<HOST IP ADDR>:5800
-```
-
-  * Any VNC client (must expose port first):
-```
-<HOST IP ADDR>:5900
+http://<HOST IP ADDR>:3000
 ```
 
 ## Shell Access
