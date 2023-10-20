@@ -167,8 +167,6 @@ Assuming that container's ports are mapped to the same host's ports, the graphic
   * Unsecured: `http:/localhost:3000`
   * Secured: `https://localhost:3001`
 
-
-
 ## Shell Access
 
 To get shell access to the running container, execute the following command:
