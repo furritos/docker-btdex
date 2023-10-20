@@ -1,5 +1,5 @@
 # Pull base image
-FROM debian:bullseye-slim
+FROM ghcr.io/linuxserver/baseimage-kasmvnc:debianbullseye
 
 # BTDEX version
 ARG BTDEX_VERSION=v0.6.8
@@ -13,58 +13,34 @@ ARG BTDEX_HOME=/opt/btdex
 # BTDEX application
 ARG BTDEX_APP=${BTDEX_HOME}/btdex.jar
 
-# root Home
-ARG ROOT_HOME=/root
+# Copy icon to share directory
+COPY icon/icon48.png /usr/share/btdex/icons/
 
-# noVNC Home
-ARG NOVNC_HOME=${ROOT_HOME}/noVNC
+# Copy startup script
+COPY start.sh /usr/local/bin/
 
-# Install Fluxbox, noVNC, OpenJDK-11 and download BTDEX.jar
-RUN apt-get update && \
+# Set web page title
+ENV TITLE "BTDEX ${BTDEX_VERSION}"
+
+# Install supporting packages and download BTDEX.jar
+RUN mkdir -p /usr/share/man/man1 && \
+    apt update && \
     env DEBIAN_FRONTEND=noninteractive apt reinstall -y ca-certificates && \
-        update-ca-certificates && \
-        apt-get install -y --no-install-recommends \
-        ca-certificates \
-        curl \
-        eterm \
-        firefox-esr \
-        fluxbox \
-        git \
-        openjdk-11-jre \
-        openssl \
-        supervisor \
-        x11vnc \
-        xdg-utils \
-        xvfb && \
-    git clone --depth 1 https://github.com/novnc/noVNC ${NOVNC_HOME} && \
-    git clone --depth 1 https://github.com/novnc/websockify ${NOVNC_HOME}/utils/websockify && \
+    update-ca-certificates && \
+    apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    firefox-esr \
+    git \
+    wmctrl \
+    supervisor \
+    openjdk-11-jre && \
     mkdir -p ${BTDEX_HOME}/plots && \
     mkdir -p ${BTDEX_HOME}/cache && \
-    mkdir -p ${ROOT_HOME}/.fluxbox && \
     curl -# -L -o ${BTDEX_APP} ${BTDEX_URL} && \
-    rm -rf ${NOVNC_HOME}/.git && \
-    rm -rf ${NOVNC_HOME}/utils/websockify/.git && \
+    chmod 755 /usr/local/bin/start.sh && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy Supervisor Daemon configuration 
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN chown -R abc:abc ${BTDEX_HOME}
 
-# Copy Signum wallpaper
-COPY signum-wallpaper.jpg /usr/share/images/fluxbox/signum-wallpaper.jpg
-
-# Copy Fluxbox configurations
-ADD ./fluxbox ${ROOT_HOME}/.fluxbox
-
-EXPOSE 8080
-
-# Setup environment variables
-ENV HOME=${ROOT_HOME} \
-    DEBIAN_FRONTEND=noninteractive \
-    LANG=en_US.UTF-8 \
-    LANGUAGE=en_US.UTF-8 \
-    LC_ALL=C.UTF-8 \
-    DISPLAY=:0.0 \
-    DISPLAY_WIDTH=1440 \
-    DISPLAY_HEIGHT=900
-
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+COPY /root /

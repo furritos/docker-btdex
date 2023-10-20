@@ -1,8 +1,7 @@
 # Docker container for BTDEX
 [![Docker Image Size](https://img.shields.io/docker/image-size/furritos/docker-btdex/latest)](https://hub.docker.com/r/furritos/docker-btdex/tags)
 
-This project takes the standalone **BTDEX** application and transforms into portable, web-accessible 
-container using Docker and noVNC.
+This project takes the standalone **BTDEX** application and transforms into portable, web-accessible container using Docker and [KasmVNC base image](https://github.com/linuxserver/docker-baseimage-kasmvnc).
 
 ---
 
@@ -13,8 +12,7 @@ container using Docker and noVNC.
 
 ## Quick Start
 
-**NOTE**: The Docker command provided in this quick start is given as an example and parameters 
-should be adjusted as needed.
+**NOTE**: The Docker command provided in this quick start is given as an example and parameters should be adjusted as needed.
 
 First, clone this repository:
 ```
@@ -22,7 +20,7 @@ git clone https://github.com/furritos/docker-btdex.git
 cd docker-btdex
 ```
 
-Launch the **BTDEX** Docker container with the following, Linux and PowerShell compatible, command:
+Launch the **BTDEX** Docker container with the following, **Linux** and **PowerShell** compatible, command:
 
 ```
 docker run -d \
@@ -30,12 +28,12 @@ docker run -d \
   -v ${pwd}/config:/opt/btdex/.config \
   -v ${pwd}/plots:/opt/btdex/plots \
   -v ${pwd}/cache:/opt/btdex/cache \
-  -p 5800:8080 \
-  -p 5900:5900 \
+  -p 3000:3000 \
+  -p 3001:3001 \
   furritos/docker-btdex
 ```
 
-For macOS, the following command will need to be executed (note the capitalized `PWD`):
+For **macOS**, the following command will need to be executed (note the capitalized `PWD`):
 
 ```
 docker run -d \
@@ -43,28 +41,16 @@ docker run -d \
   -v ${PWD}/config:/opt/btdex/.config \
   -v ${PWD}/plots:/opt/btdex/plots \
   -v ${PWD}/cache:/opt/btdex/cache \
-  -p 5800:8080 \
-  -p 5900:5900 \
+  -p 3000:3000 \
+  -p 3001:3001 \
   furritos/docker-btdex
 ```
 
-Finally, take your favorite web browse and open `http://localhost:5800/vnc.html`.
+Finally, take your favorite web browse and open `http://localhost:3000/`.
+For HTTPS, use `https://localhost:3001`,
+
 Please refer to this [Get Started](https://btdex.trade/index.html#GetStarted) page for more information on using **BTDEX**.
 
-**NOTE:** By default, the resolution is set to `1440X900`.  To override these values, set resolution to `1680X1050`, the `docker run` command line would be:
-
-```
-docker run -d \
-  --name=container-btdex \
-  -v ${pwd}/config:/opt/btdex/.config \
-  -v ${pwd}/plots:/opt/btdex/plots \
-  -v ${pwd}/cache:/opt/btdex/cache \
-  -p 5800:8080 \
-  -p 5900:5900 \
-  -e DISPLAY_WIDTH=1680 \
-  -e DISPLAY_HEIGHT=1050 \
-  furritos/docker-btdex
-```
 
 ### Cache Volume Configuration
 
@@ -103,20 +89,9 @@ docker run [-d] \
 | -p        | Set a network port mapping (exposes an internal container port to the host).  See the [Ports](#ports) section for more details. |
 | -e        | Pass an environment variable to the container. See the [Environment Variables](#environment-variables) section for more details. |
 
-### Environment Variables
-
-To customize some properties of this container, the following environment variables can be passed via the `-e` parameter (one for each variable).  Value of this parameter has the format `<VARIABLE_NAME>=<VALUE>`.
-
-| Variable       | Description                                  | Default |
-|----------------|----------------------------------------------|---------|
-|`DISPLAY_WIDTH`| Width (in pixels) of the application's window. | `1440` |
-|`DISPLAY_HEIGHT`| Height (in pixels) of the application's window. | `900` |
-
 ### Data Volumes
 
-The following table describes data volumes used by the container.  The mappings
-are set via the `-v` parameter.  Each mapping is specified with the following
-format: `<HOST_DIR>:<CONTAINER_DIR>[:PERMISSIONS]`.
+The following table describes data volumes used by the container.  The mappings are set via the `-v` parameter.  Each mapping is specified with the following format: `<HOST_DIR>:<CONTAINER_DIR>[:PERMISSIONS]`.
 
 | Container path  | Permissions | Description |
 |-----------------|-------------|-------------|
@@ -126,25 +101,17 @@ format: `<HOST_DIR>:<CONTAINER_DIR>[:PERMISSIONS]`.
 
 ### Ports
 
-Here is the list of ports used by the container.  They can be mapped to the host
-via the `-p` parameter (one per port mapping).  Each mapping is defined in the
-following format: `<HOST_PORT>:<CONTAINER_PORT>`.  The port number inside the
-container cannot be changed, but you are free to use any port on the host side.
+Here is the list of ports used by the container.  They can be mapped to the host via the `-p` parameter (one per port mapping).  Each mapping is defined in the following format: `<HOST_PORT>:<CONTAINER_PORT>`.  The port number inside the container cannot be changed, but you are free to use any port on the host side.
 
 | Host Port | Container Port | Mapping to host | Description |
 |-----------|----------------|-----------------|-------------|
-| 5800 | 8080 | Mandatory | Port used to access the application's GUI via the web interface. |
-| 5900 | 5900 | Optional | Port used to access the application's GUI via the VNC protocol.  Optional if no VNC client is used. |
 | 9000 | 9000 | Optional | Port used by *BTDEX* to expose API endpoints.  More information can be found over at [BTDEX - API](https://github.com/btdex/btdex#api) section. |
 
 ### Changing Parameters of a Running Container
 
-As can be seen, environment variables, volume and port mappings are all specified
-while creating the container.
+As can be seen, environment variables, volume and port mappings are all specified while creating the container.
 
-The following steps describe the method used to add, remove or update
-parameter(s) of an existing container.  The general idea is to destroy and
-re-create the container:
+The following steps describe the method used to add, remove or update parameter(s) of an existing container.  The general idea is to destroy and re-create the container:
 
   1. Stop the container (if it is running):
 ```
@@ -157,24 +124,15 @@ docker rm container-btdex
   3. Create/start the container using the `docker run` command, by adjusting
      parameters as needed.
 
-**NOTE**: Since all application's data is saved under the `/opt/btdex/.config` container
-folder, destroying and re-creating a container is not a problem: nothing is lost
-and the application comes back with the same state (as long as the volume mapping of
-the `/opt/btdex/.config` folder remains the same).
+**NOTE**: Since all application's data is saved under the `/opt/btdex/.config` container folder, destroying and re-creating a container is not a problem: nothing is lost and the application comes back with the same state (as long as the volume mapping of the `/opt/btdex/.config` folder remains the same).
 
 ## Docker Image Update
 
-Because features are added, issues are fixed, or simply because a new version
-of the containerized application is integrated, the Docker image is regularly
-updated.  Different methods can be used to update the Docker image.
+Because features are added, issues are fixed, or simply because a new version of the containerized application is integrated, the Docker image is regularly updated.  Different methods can be used to update the Docker image.
 
-The system used to run the container may have a built-in way to update
-containers.  If so, this could be your primary way to update Docker images.
+The system used to run the container may have a built-in way to update containers.  If so, this could be your primary way to update Docker images.
 
-An other way is to have the image be automatically updated with [Watchtower].
-Whatchtower is a container-based solution for automating Docker image updates.
-This is a "set and forget" type of solution: once a new image is available,
-Watchtower will seamlessly perform the necessary steps to update the container.
+An other way is to have the image be automatically updated with [Watchtower]. Whatchtower is a container-based solution for automating Docker image updates.  This is a "set and forget" type of solution: once a new image is available, **Watchtower** will seamlessly perform the necessary steps to update the container.
 
 Finally, the Docker image can be manually updated with these steps:
 
@@ -190,8 +148,7 @@ docker stop container-btdex
 ```
 docker rm container-btdex 
 ```
-  4. Create and start the container using the `docker run` command, with the
-the same parameters that were used when it was deployed initially.
+  4. Create and start the container using the `docker run` command, with the the same parameters that were used when it was deployed initially.
 
 [Watchtower]: https://github.com/containrrr/watchtower
 
@@ -205,30 +162,21 @@ For unRAID, a container image can be updated by following these steps:
 
 ## Accessing the GUI
 
-Assuming that container's ports are mapped to the same host's ports, the
-graphical interface of the application can be accessed via:
+Assuming that container's ports are mapped to the same host's ports, the graphical interface of the application can be accessed via:
 
-  * A web browser:
-```
-http://<HOST IP ADDR>:5800
-```
-
-  * Any VNC client (must expose port first):
-```
-<HOST IP ADDR>:5900
-```
+  * Unsecured: `http:/localhost:3000`
+  * Secured: `https://localhost:3001`
 
 ## Shell Access
 
 To get shell access to the running container, execute the following command:
 
 ```
-docker exec -ti container-btdex sh
+docker exec -ti container-btdex bash
 ```
 
 ## Support or Contact
 
-Having troubles with the container or have questions?  Please
-[create a new issue].
+Having troubles with the container or have questions?  Please [create a new issue].
 
 [create a new issue]: https://github.com/furritos/docker-btdex/issues

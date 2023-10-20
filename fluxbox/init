@@ -1,3 +1,0 @@
-session.screen0.rootCommand:    fbsetbg -l
-session.screen0.workspaces:     1
-session.styleFile:              /usr/share/fluxbox/styles/carp
