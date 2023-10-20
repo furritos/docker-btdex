@@ -98,6 +98,8 @@ docker run [-d] \
 
 ### Environment Variables
 
+*Courtesy of [KasmVNC Github Page](https://github.com/linuxserver/docker-baseimage-kasmvnc)*
+
 **Authentication for these containers is included as a convenience and to keep in sync with the previous xrdp containers they replace. We use bash to substitute in settings user/password and some strings might break that. In general this authentication mechanism should be used to keep the kids out not the internet**
 
 If you are looking for a robust secure application gateway please check out [SWAG](https://github.com/linuxserver/docker-swag). 
@@ -222,7 +224,7 @@ http://<HOST IP ADDR>:3000
 To get shell access to the running container, execute the following command:
 
 ```
-docker exec -ti container-btdex sh
+docker exec -ti container-btdex bash
 ```
 
 ## Support or Contact
