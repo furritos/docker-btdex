@@ -1,1 +1,1 @@
-java -Djava.io.tmpdir=/tmp -Duser.home=/opt/btdex -jar /opt/btdex/btdex.jar
+/usr/local/bin/start.sh
