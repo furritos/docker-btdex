@@ -1,0 +1,11 @@
+{
+	"dockerfiles": {
+		"Dockerfile": [
+			{
+				"name": "ghcr.io/linuxserver/baseimage-kasmvnc",
+				"tag": "debianbullseye",
+				"digest": "b2d014d1533990e9dfc19ae2ec33f2c909223a2437d65631028c68f3e71891f2"
+			}
+		]
+	}
+}
